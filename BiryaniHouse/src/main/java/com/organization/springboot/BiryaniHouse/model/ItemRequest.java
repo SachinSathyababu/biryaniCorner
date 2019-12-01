@@ -3,9 +3,10 @@ package com.organization.springboot.BiryaniHouse.model;
 public class ItemRequest {
 	
 	private Item item;
-	public enum Size { HALF, FULL, FAMILYPACK};
 	
+	public enum Size { HALF, FULL, FAMILYPACK};
 	private Size size;
+	
 	private int count;
 	
 	public enum Stock { INSTOCK, OUTOFSTOCK }

@@ -14,7 +14,7 @@ public class BuyTwoGetOneDiscount implements Discount{
 		// TODO Auto-generated method stub
 		
 		for(ItemRequest request: requests) {
-			if(request.getCount()>=2) {
+			if(request!=null && request.getCount()>=2) {
 				int count= request.getCount();
 				count=count+(count/2);
 				request.setCount(count);

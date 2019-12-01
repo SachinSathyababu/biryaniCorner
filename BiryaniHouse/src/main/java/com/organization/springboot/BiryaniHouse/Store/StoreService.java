@@ -15,7 +15,13 @@ public class StoreService implements Store{
 	@Override
 	public void addItem(Item item) {
 		// TODO Auto-generated method stub
-		items.add(item);
+		if(item!=null &&
+				item.getName()!=null && !item.getName().trim().isEmpty() &&
+				item.getDescription()!=null && !item.getDescription().trim().isEmpty() &&
+				item.getCost()!=0)
+			{
+			items.add(item);
+			}
 	}
 
 	@Override
@@ -27,7 +33,7 @@ public class StoreService implements Store{
 	@Override
 	public void deleteItem(Item item) {
 		// TODO Auto-generated method stub
-		items.remove(item);
+		
 	}
 
 	@Override

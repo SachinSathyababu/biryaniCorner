@@ -1,6 +1,7 @@
 package com.organization.springboot.BiryaniHouse.BiryaniReceipt;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,18 +34,30 @@ public class ReceiptService implements Receipt{
 		List<ItemRequest> actualRequests= new ArrayList<ItemRequest>();
 		List<String> messages= new ArrayList<String>();
 		
+		if(requests!=null && requests.size()>0) {
+			
+		Iterator<ItemRequest> requestItr=requests.iterator();
+		
+		while(requestItr.hasNext()) {
+			if(requestItr.next()==null) {
+				requestItr.remove();
+			}
+		}
+		
+		if(requests.size()>0) {
 		order= cooking.Cook(requests);
 		
 		requests= order.getRequests();
 		
 		
-		if(requests!=null && requests.size()>0) {
+		if(requests!=null && 
+				requests.size()>0) {
 		for(ItemRequest request: requests) {
 			
 			if(request.getStock().equals(Stock.INSTOCK)) {
 				
 				actualRequests.add(request);
-				//messages.add(request.getSize()+"-"+request.getItem().getName()+"-"+request.getCount()+" Plate");
+				messages.add("Order Successful...Thank You");
 				order.setStatus(Status.PROCESSING);
 				
 			}else
@@ -57,13 +70,25 @@ public class ReceiptService implements Receipt{
 		}
 		}
 		
-		
+		if(actualRequests.size()>0) {
 		price= billing.Bill(actualRequests);
-		 order.setPrice(price);
+		order.setPrice(price);
+		}
+		 
 		 order.setRequests(requests);
-		 order.setMessage(messages);
 		 
-		 
+		if(messages.size()>0) {
+			order.setMessage(messages);
+		}
+		}
+		}
+		else {
+			String message="Empty Requests are passed";
+			messages.add(message);
+			order.setMessage(messages);
+			order.setStatus(Status.CANCELLED);
+		}
+		
 		return order;
 	}
 

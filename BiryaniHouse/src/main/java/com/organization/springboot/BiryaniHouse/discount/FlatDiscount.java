@@ -11,7 +11,7 @@ import com.organization.springboot.BiryaniHouse.model.ItemRequest;
 public class FlatDiscount implements Discount{
 	
 	@Value("${item.Flat}")
-	private double flatDiscountPercentage;
+	private double flatDiscountPercentage=20;
 
 	@Override
 	public double discount(List<ItemRequest> requests) {
@@ -19,7 +19,8 @@ public class FlatDiscount implements Discount{
 		double finalDiscount=0;
 		
 		for(ItemRequest request: requests) {
-			if(request.getCount()<3) {
+			if(request!=null && request.getItem()!=null &&
+					request.getCount()<2) {
 				finalDiscount=finalDiscount+((request.getItem().getCost() * flatDiscountPercentage
 						* request.getCount())/100);
 			}

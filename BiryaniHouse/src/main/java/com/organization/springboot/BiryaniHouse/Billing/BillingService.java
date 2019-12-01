@@ -15,7 +15,7 @@ import com.organization.springboot.BiryaniHouse.model.Price;
 public class BillingService implements Billing{
 
 	@Value("${item.Tax}")
-	private double tax;
+	private double tax=20;
 	
 	@Autowired
 	private List<Discount> discounts;
@@ -31,26 +31,25 @@ public class BillingService implements Billing{
 		{
 		for(ItemRequest request: requests) {
 			
+			if(request!=null && request.getItem()!=null) {
 			totalCost=totalCost+(request.getItem().getCost() * request.getCount());
 		}
+		}
 		
+		if(totalCost>0) {
 		for(Discount discount : discounts) {
 		finalDiscount= finalDiscount+discount.discount(requests);
 		}
+		
+		price.setCostPrice(totalCost);
 		totalCost=totalCost-finalDiscount;
 		tax=(tax * totalCost)/100;
 		finalCost= totalCost+tax;
 		
-		price.setCostPrice(totalCost);
 		price.setTax(tax);
 		price.setDiscount(finalDiscount);
 		price.setFinalPrice(finalCost);
 		}
-		else {
-			price.setCostPrice(0);
-			price.setTax(0);
-			price.setDiscount(0);
-			price.setFinalPrice(0);
 		}
 		return price;
 	}
